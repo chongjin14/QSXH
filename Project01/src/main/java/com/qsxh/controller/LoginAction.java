@@ -22,9 +22,15 @@ public class LoginAction extends ActionSupport {
     public ModelAndView managerLogin(String uname, String password){
         ModelAndView mv = new ModelAndView();
         Users users = iAdmin.userLogin(uname,password);
-        System.out.println(users);
-        mv.addObject("useM",users);
-        mv.setViewName("home");
+        System.out.println("账号名"+uname+"   "+"密码"+password);
+        if(null!=users)
+        {
+            mv.addObject("useM",users);
+            mv.setViewName("home");
+        }else{
+            mv.setViewName("loginfile");
+        }
+
         return mv;
     }
     //ModelAndView 提供保存域的功能相当于 request.setAttribute();
