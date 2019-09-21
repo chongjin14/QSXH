@@ -20,6 +20,7 @@ public class LoginAction extends ActionSupport {
 
     @RequestMapping("/login")
     public ModelAndView managerLogin(String uname, String password){
+
         ModelAndView mv = new ModelAndView();
         Users users = iAdmin.userLogin(uname,password);
         System.out.println("账号名"+uname+"   "+"密码"+password);
