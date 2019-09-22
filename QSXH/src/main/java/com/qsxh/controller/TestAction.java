@@ -23,6 +23,7 @@ public class TestAction extends ActionSupport {
         User user = iTest.userLogin(uname,password);
         System.out.println(user);
         mv.addObject("useM",user);
+        //这是测试
         mv.setViewName("muban");
         return mv;
     }
