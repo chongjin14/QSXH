@@ -1,11 +1,9 @@
-package com.qsxh.dao;
+package com.qsxh.service;
 
 import com.qsxh.entity.User;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface TestDao {
+public interface UserService {
 
     //用户登录
     public User userLogin(@Param("userid") String userid, @Param("upass") String upass);

@@ -1,20 +1,20 @@
 package com.qsxh.service.impl;
 
-import com.qsxh.dao.TestDao;
+import com.qsxh.dao.UserDao;
 import com.qsxh.entity.User;
-import com.qsxh.service.ITest;
+import com.qsxh.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 @Service("/iTest")
-public class TestImpl implements ITest {
+public class UserServiceImp implements UserService {
 
     @Resource
-    private TestDao testDao;
+    private UserDao UserDao;
 
     @Override
     public User userLogin(String userid, String upass) {
-        return testDao.userLogin(userid,upass);
+        return UserDao.userLogin(userid,upass);
     }
 }

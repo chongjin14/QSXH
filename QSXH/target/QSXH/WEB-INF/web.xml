@@ -6,7 +6,7 @@
 
   <!--首页 -->
   <welcome-file-list>
-    <welcome-file>test.jsp</welcome-file>
+    <welcome-file>jsp/test.jsp</welcome-file>
   </welcome-file-list>
 
   <!-- 指定spring配置文件的路径 -->

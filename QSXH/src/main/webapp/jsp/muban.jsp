@@ -1,18 +1,19 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>牵手西湖婚恋交友网</title>
     <base href="<%=basePath%>">
-    <meta name="Keywords" content="牵手西湖婚恋交友网" />
+    <meta name="Keywords" content="牵手西湖婚恋交友网"/>
     <meta name="Description" content="牵手西湖婚恋交友网"/>
-    <link type="image/x-icon" rel=icon href="images/icon.png" />
+    <link type="image/x-icon" rel=icon href="images/icon.png"/>
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
-
+     <script src="js/jquery-1.8.3.min.js"></script>
 </head>
 <body>
 <div class="head">
@@ -20,8 +21,17 @@
         <div class="top-left">
         </div>
         <div class="top-right">
-            <a href="">注册</a> |
-            <a href="">登录</a>
+
+            <c:choose>
+                <c:when test="${ sessionScope.user!=null }">
+                    <a>${ sessionScope.user.uname },欢迎您！</a>|
+                    <a href="testManager/outLogin.action">注销</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="">注册</a> |
+                    <a href="">登录</a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
     <div class="top-ban">
