@@ -1,5 +1,6 @@
 package com.qsxh.controller;
 
+import com.qsxh.entity.User;
 import com.qsxh.service.IUserBiz;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,11 +44,10 @@ public class RegAction {
     public @ResponseBody Map reg(HttpServletRequest re ,String phone, String password)
     {
         System.out.println("手机号："+ phone + "密码:"+ password);
-        boolean flag = userBiz.reg(phone, password);//插入tbluser
-        boolean flag2 = userBiz.addHisData(phone);//插入tbldata
+        boolean flag = userBiz.regAndAddData(phone, password);//插入tbluser和tbldata
 
         Map<String , String> map = new HashMap<>();
-        if (flag && flag2)
+        if (flag)
         {
             map.put("msg", "success");
         }
