@@ -9,6 +9,7 @@
     账号：<input type="text" name="uname"> <br/>
     密码：<input type="password" name="password"><br/>
     <input type="submit" value="登录">
+    <a href="jsp/clientReg.jsp">注册</a>
 </form>
 
 </body>
