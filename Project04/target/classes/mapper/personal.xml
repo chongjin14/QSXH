@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.PersonalDao">
+    <!--注册完善-->
+    <update id="regUpdate" parameterType="com.qsxh.entity.PersonalData">
+        UPDATE tbluser t1 ,tbldata t2 SET t1.uimgurl =#{imgurl},t2.usex=#{usex},t2.uage=#{uage},
+        t2.ubirthday=#{ubirthday},t2.uwechat=#{contact},t2.uaddress=#{uaddress},t2.uheight=#{uheight},
+        t2.uweight=#{uweight},t2.uedu=#{uedu},t2.umerried=#{umerried},t2.ublood=#{ublood},
+        t2.conste=#{constellation}, t2.uincome=#{uincome},t2.realname=#{realname},
+        t2.s_province=#{s_province},t2.s_city=#{s_city}
+        where t1.userid = #{userid} and t1.userid =t2.userid
+    </update>
+
+</mapper>

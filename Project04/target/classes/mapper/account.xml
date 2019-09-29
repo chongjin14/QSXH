@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.AccountDao">
+<!--添加充值记录逻辑-->
+<insert id="recharge" parameterType="com.qsxh.dao.AccountDao">
+   INSERT into tblaccount (adate,agold,atype,rmb,userid) VALUES (#{adate},#{agold},#{atype},#{rmb},#{userid})
+</insert>
+<!--修改用户金币余额逻辑-->
+  <update id="changegold">
+     update tbldata set ugold = #{gold} where userid= #{id}
+  </update>
+
+   <!-- 查找充值记录逻辑-->
+<!--    <select id="selectArecords" resultType="com.qsxh.entity.Account">
+        select * from tblaccount where userid=#{id} and atype in #{type}
+    </select>-->
+
+    <resultMap id="accountMap" type="com.qsxh.entity.Account">
+        <id property="accountid" column="accountid"></id>
+        <result property="adate" column="adate"></result>
+        <result property="agold" column="agold"></result>
+        <result property="atype" column="atype"></result>
+        <result property="rmb" column="rmb"></result>
+        <result property="userid" column="userid"></result>
+        <association property="param"   javaType="com.qsxh.entity.Param" >
+            <id  column="atype" property="paramid"></id>
+            <result property="pname" column="pname"></result>
+        </association>
+    </resultMap>
+
+    <select id="selectArecords" resultMap="accountMap">
+        select a.*,p.paramid,p.pname from tblaccount a,tblparam p where a.userid=#{id} and a.atype=p.paramid
+         and a.atype in
+         <foreach collection="type" index="index" item="id" open="(" separator="," close=")">
+         #{id}
+         </foreach>
+    </select>
+
+
+
+
+    <!--更新/删除 VIP用户到期时间-->
+    <update id="addVipenddate">
+        update tbldata set vipenddate =#{date} where  userid=#{id}
+    </update>
+
+    <!--得到VIP用户到期时间-->
+    <select id="getVipenddate" resultType="java.lang.String">
+        select vipenddate from tbldata where userid=#{id}
+    </select>
+
+</mapper>
+
+

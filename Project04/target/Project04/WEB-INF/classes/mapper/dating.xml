@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.DatingDao">
+
+    <!--我的约会列表-->
+    <select id="datingInform" resultType="com.qsxh.entity.Dating">
+        select * from tbldating
+        where (dtoid = #{userid} or dfromid = #{userid}) and dstate != '51'
+        ORDER BY ddate desc , dtime desc
+    </select>
+
+    <!--查看约会详情-->
+    <select id="datingDetails" resultType="com.qsxh.entity.Dating">
+        select * from tbldating where dateid = #{dateid}
+    </select>
+
+</mapper>

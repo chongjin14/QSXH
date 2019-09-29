@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.ChatUserDao">
+
+    <select id="findUser" resultType="com.qsxh.entity.TblUser">
+        SELECT tu.userid,tu.uname,tu.uimgurl,tu.uonline
+        FROM tblchatuser tcu,tbluser tu
+        WHERE tcu.fromid = #{userid} AND tcu.toid=tu.userid
+    </select>
+
+    <insert id="addChat" parameterType="com.qsxh.entity.TblChatUser">
+        INSERT INTO tblchatuser (fromid, toid) VALUES (#{fromid}, #{toid})
+    </insert>
+
+    <delete id="offLine">
+        DELETE FROM tblchatuser WHERE toid=#{userid} OR fromid=#{userid};
+    </delete>
+
+</mapper>

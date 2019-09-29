@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.MatchUserDao">
+    <!--按魅力值排序查询-->
+    <select id="findUserByCharisma" resultType="com.qsxh.entity.UserAndData">
+        select * from tbluser u,tbldata d where u.userid = d.userid order by ucharm DESC
+    </select>
+
+    <!--按所选条件查询-->
+    <select id="findUserByCondition" resultType="com.qsxh.entity.UserAndData" parameterType="com.qsxh.entity.UserAndData">
+        select * from tbluser u,tbldata d
+        <where>
+            u.userid = d.userid and d.uage &gt;= #{minage} and d.uage &lt;= #{maxage}
+            <if test="null != uedu and '不限' != uedu"><!--学历-->
+                <bind name="Buedu" value="'%'+uedu+'%'"/>
+                and d.uedu like #{Buedu}
+            </if>
+            <if test="null != umerried and '不限' != umerried"><!--婚姻状况-->
+                <bind name="Bumerried" value="'%'+umerried+'%'"/>
+                and d.umerried like #{Bumerried}
+            </if>
+            <if test="null != uhouse and '不限' != uhouse"><!--住房-->
+                <bind name="Buhouse" value="'%'+uhouse+'%'"/>
+                and d.uhouse like #{Buhouse}
+            </if>
+            <if test="null != uwork and '不限' != uwork"><!--工作-->
+                <bind name="Buwork" value="'%'+uwork+'%'"/>
+                and d.uwork like #{Buwork}
+            </if>
+            <if test="null != uincome and '不限' != uincome"><!--收入-->
+                <bind name="Buincome" value="'%'+uincome+'%'"/>
+                and d.uincome like #{Buincome}
+            </if>
+            <if test="null != uaddress and '不限' != uaddress"><!--地址-->
+                <bind name="Buaddress" value="'%'+uaddress+'%'"/>
+                and d.uaddress like #{Buaddress}
+            </if>
+        </where>
+    </select>
+
+    <!--近期用户查询-->
+    <select id="findUserByTime" resultType="com.qsxh.entity.UserAndData">
+        select * from tbluser u,tbldata d where u.userid = d.userid and usex = #{usex} order by regdate DESC limit 20
+    </select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.MessageDao">
+
+    <!--我的留言-->
+    <select id="messageInform" resultType="com.qsxh.entity.Message">
+        select * from tblmessage where mtoid = #{userid} ORDER BY mtime desc
+    </select>
+
+    <!--查看详情-->
+    <select id="messageDetails" resultType="com.qsxh.entity.Message">
+        select * from tblmessage where msgid = #{msgid}
+    </select>
+
+    <!--更改为已读-->
+    <update id="readMessage">
+        update tblmessage set mstate = '31' where msgid = #{msgid}
+    </update>
+
+</mapper>

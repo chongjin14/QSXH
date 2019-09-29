@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.AdminDao">
+
+    <!--    管理员列表-->
+    <select id="findAdminList" parameterType="com.qsxh.entity.User" resultType="com.qsxh.entity.User">
+        select u1.*,u2.* from tbluser u1,tblrole u2 where u1.roleid in (1,2) and u1.ustate='91'and u1.roleid=u2.roleid
+        <if test=" !(''.equals(userid)) and null!= userid ">
+            and u1.userid like '%${userid}%'
+        </if>
+        <if test=" !(''.equals(uname)) and null!= uname">
+            and u1.uname like '%${uname}%'
+        </if>
+        <if test=" !(''.equals(rname)) and null!= rname">
+            and u2.rname=#{rname}
+        </if>
+        limit #{page},#{limit}
+    </select>
+
+
+<!--重置密码-->
+    <update id="adminPassReset" parameterType="java.lang.String" >
+        update tbluser set upass='123456' where userid=#{userid}
+    </update>
+
+
+    <!--    删除管理员，更改状态为92-->
+    <update id="deleteAdmin" parameterType="java.lang.String" >
+        update tbluser set ustate='92' where userid=#{userid}
+    </update>
+
+    <!--    修改管理员资料-->
+    <update id="updateAdmin" parameterType="com.qsxh.entity.User" >
+         update tbluser  set uname=#{uname},upass=#{upass}
+        <if test=" '超级管理员'.equals(rname) ">
+            ,roleid='1'
+        </if>
+        <if test=" '普通管理员'.equals(rname) ">
+            ,roleid='2'
+        </if>
+         where userid=#{userid}
+    </update>
+
+    <!--    添加管理员-->
+    <update id="addAdmin" parameterType="com.qsxh.entity.User" >
+        <if test=" '超级管理员'.equals(rname) ">
+            insert into tbluser (userid,uname,upass,roleid,ustate,regdate) values (#{userid},#{uname},#{upass},'1','91',#{regdate})
+        </if>
+        <if test=" '普通管理员'.equals(rname) ">
+            insert into tbluser (userid,uname,upass,roleid,ustate,regdate) values (#{userid},#{uname},#{upass},'2','91',#{regdate})
+        </if>
+    </update>
+
+    <!--    管理员数-->
+    <select id="getAdminNum" parameterType="com.qsxh.entity.User" resultType="java.lang.Integer">
+        select count(*) from tbluser u1,tblrole u2 where u1.roleid in (1,2) and u1.ustate='91'and u1.roleid=u2.roleid
+        <if test=" !(''.equals(userid)) and null!= userid ">
+            and u1.userid like '%${userid}%'
+        </if>
+        <if test=" !(''.equals(uname)) and null!= uname">
+            and u1.uname like '%${uname}%'
+        </if>
+        <if test=" !(''.equals(rname)) and null!= rname">
+            and u2.rname=#{rname}
+        </if>
+    </select>
+
+
+
+
+</mapper>

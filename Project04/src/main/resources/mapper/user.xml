@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qsxh.dao.UserDao">
+    <!--================wzq==================-->
+    <!--账号重复验证-->
+    <select id="checkUserid" resultType="com.qsxh.entity.User">
+        select * from tbluser where userid = #{userid}
+    </select>
+
+    <!--前台注册 插入tbluser-->
+    <insert id="reg" >
+        insert into tbluser (userid , upass , roleid , regdate) values (#{userid} , #{upass} , '5' , #{regdate})
+    </insert>
+
+    <!--前台注册 插入tbldata-->
+    <insert id="addHisData">
+        insert into tbldata (userid) values (#{userid})
+    </insert>
+
+    <!--前台注册 插入tblhabit-->
+    <insert id="addHisHabit">
+        insert into tblhabit (userid) values (#{userid})
+    </insert>
+
+    <!--前台注册 插入tblcplimit-->
+    <insert id="addHisCplimit">
+        insert into tblcplimit (userid) values (#{userid})
+    </insert>
+
+    <!--===============kjy===============-->
+
+    <select id="userLogin" resultType="com.qsxh.entity.User">
+        select * from tbluser where userid = #{userid} and upass = #{upass} and roleid in (3,4,5)
+    </select>
+
+    <select id="getUser"  resultType="com.qsxh.entity.User">
+           select * from tbluser where userid = #{userid}
+    </select>
+
+    <select id="selectGold" resultType="java.lang.String">
+        select ugold from tbldata where userid = #{id}
+    </select>
+
+    <select id="getRolename" resultType="java.lang.String">
+        SELECT rname FROM tblrole WHERE roleid = #{rid}
+   </select>
+
+    <select id="getParam" resultType="java.lang.String">
+        SELECT pname FROM tblparam WHERE paramid = #{paramid}
+    </select>
+
+    <update id="changeRoldid" parameterType="java.lang.String">
+       update tbluser SET roleid = #{rid} where userid = #{id}
+    </update>
+
+    <!--=======================gjy===================-->
+    <!--    普通用户列表-->
+    <select id="findUserList" parameterType="com.qsxh.entity.User" resultType="com.qsxh.entity.User">
+        select u1.*,u2.* from tbluser u1,tbldata u2 where u1.roleid='3'and u1.ustate='91'and u1.userid=u2.userid
+        <if test=" !(''.equals(userid)) and null!= userid ">
+            and u1.userid like '%${userid}%'
+        </if>
+        <if test=" !(''.equals(uname)) and null!= uname">
+            and u1.uname like '%${uname}%'
+        </if>
+        <if test=" !(''.equals(uedu)) and null!= uedu">
+            and u2.uedu=#{uedu}
+        </if>
+        <if test=" !(''.equals(begindate)) and null!= begindate">
+            and u1.regdate between #{begindate}
+        </if>
+        <if test=" !(''.equals(enddate)) and  null!= enddate">
+            and #{enddate}
+        </if>
+        limit #{page},#{limit}
+    </select>
+
+    <!--    vip用户列表-->
+    <select id="findVipUserList" parameterType="com.qsxh.entity.User" resultType="com.qsxh.entity.User">
+        select u1.*,u2.* from tbluser u1,tbldata u2 where u1.roleid='4'and u1.ustate='91'and u1.userid=u2.userid
+        <if test=" !(''.equals(userid)) and null!= userid ">
+            and u1.userid like '%${userid}%'
+        </if>
+        <if test=" !(''.equals(uname)) and null!= uname">
+            and u1.uname like '%${uname}%'
+        </if>
+        <if test=" !(''.equals(uedu)) and null!= uedu">
+            and u2.uedu=#{uedu}
+        </if>
+        <if test=" !(''.equals(begindate)) and null!= begindate">
+            and u1.regdate between #{begindate}
+        </if>
+        <if test=" !(''.equals(enddate)) and  null!= enddate">
+            and #{enddate}
+        </if>
+        limit #{page},#{limit}
+    </select>
+
+    <update id="userPassReset" parameterType="java.lang.String" >
+        update tbluser set upass='123456' where userid=#{userid}
+    </update>
+
+
+    <!--    删除用户，更改状态为92-->
+    <update id="deleteUser" parameterType="java.lang.String" >
+        update tbluser set ustate='92' where userid=#{userid}
+    </update>
+    <!--    更改vip用户变为普通用户-->
+    <update id="deleteVipUser" parameterType="java.lang.String" >
+        update tbluser set roleid='3' where userid=#{userid}
+    </update>
+    <!--    修改用户资料-->
+    <update id="updateUser" parameterType="com.qsxh.entity.User" >
+         update tbluser u1,tbldata u2 set u1.uname=#{uname},u2.uheight=#{uheight},u2.uweight=#{uweight},u2.umerried=#{umerried},
+         u2.uincome=#{uincome},u2.conste=#{conste},u2.ublood=#{ublood},u2.usex=#{usex},
+         u2.ubirthday=#{ubirthday},u2.uedu=#{uedu},u2.uaddress=#{uaddress}
+         where u1.userid=#{userid} and u1.userid=u2.userid
+    </update>
+
+    <!--    普通用户数-->
+    <select id="getUserNum" parameterType="com.qsxh.entity.User" resultType="java.lang.Integer">
+        select count(*) from tbluser u1,tbldata u2 where u1.roleid='3'and u1.ustate='91' and u1.userid=u2.userid
+        <if test=" !(''.equals(userid)) and null!= userid ">
+            and u1.userid like '%${userid}%'
+        </if>
+        <if test=" !(''.equals(uname)) and null!= uname">
+            and u1.uname like '%${uname}%'
+        </if>
+        <if test=" !(''.equals(uedu)) and null!= uedu">
+            and u2.uedu=#{uedu}
+        </if>
+        <if test=" !(''.equals(begindate)) and null!= begindate">
+            and u1.regdate between #{begindate}
+        </if>
+        <if test=" !(''.equals(enddate)) and  null!= enddate">
+            and #{enddate}
+        </if>
+    </select>
+
+    <!--    vip用户数-->
+    <select id="getVipUserNum" parameterType="com.qsxh.entity.User" resultType="java.lang.Integer">
+        select count(*) from tbluser u1,tbldata u2 where u1.roleid='4'and u1.ustate='91' and u1.userid=u2.userid
+        <if test=" !(''.equals(userid)) and null!= userid ">
+            and u1.userid like '%${userid}%'
+        </if>
+        <if test=" !(''.equals(uname)) and null!= uname">
+            and u1.uname like '%${uname}%'
+        </if>
+        <if test=" !(''.equals(uedu)) and null!= uedu">
+            and u2.uedu=#{uedu}
+        </if>
+        <if test=" !(''.equals(begindate)) and null!= begindate">
+            and u1.regdate between #{begindate}
+        </if>
+        <if test=" !(''.equals(enddate)) and  null!= enddate">
+            and #{enddate}
+        </if>
+    </select>
+</mapper>
